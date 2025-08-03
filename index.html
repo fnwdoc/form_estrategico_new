@@ -1,0 +1,696 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulário Estratégico</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+            font-weight: 500;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #4CAF50;
+            box-shadow: 0 0 5px rgba(76, 175, 80, 0.2);
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .button-secondary {
+            background-color: #007bff;
+            flex: 1;
+        }
+
+        .button-secondary:hover {
+            background-color: #0056b3;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .file-label {
+            background-color: #6c757d;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            text-align: center;
+            flex: 1;
+            display: inline-block;
+        }
+
+        .file-label:hover {
+            background-color: #545b62;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        #summary {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+        }
+
+        #summary h2 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        #summaryContent {
+            line-height: 1.6;
+        }
+
+        .error {
+            border-color: #ff0000 !important;
+        }
+
+        .error-message {
+            color: #ff0000;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .logo {
+            display: block;
+            margin: 0 auto 20px auto;
+            max-width: 100px;
+            height: auto;
+        }
+
+        .button-verify {
+            background-color: #28a745;
+            margin-left: 10px;
+        }
+
+        .button-verify:hover {
+            background-color: #218838;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            position: relative;
+            margin: 2% auto;
+            width: 90%;
+            max-width: 1200px;
+            height: 90%;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            margin: 0;
+            color: #333;
+        }
+
+        .close {
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            background: none;
+            padding: 0;
+            width: auto;
+        }
+
+        .close:hover {
+            color: #000;
+        }
+
+        .modal-body {
+            height: calc(100% - 80px);
+            padding: 0;
+        }
+
+        .modal-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 0 0 10px 10px;
+        }
+
+        @media (max-width: 768px) {
+            .modal-content {
+                margin: 1% auto;
+                width: 95%;
+                height: 95%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <img src="https://d1yei2z3i6k35z.cloudfront.net/3119789/6621e93e3f3ae_FNWfreenatstoreLogodownload.jpg"
+            alt="Logo" class="logo">
+        <h1>Formulário Estratégico</h1>
+
+        <div style="display: flex; justify-content: flex-end; margin-bottom: 30px;">
+            <label for="fileInputTop" class="file-label" style="width: auto; flex: none;">Carregar Dados (JSON)</label>
+            <input type="file" id="fileInputTop" class="file-input" accept=".json" onchange="carregarJSON(event)">
+        </div>
+
+        <form id="strategicForm">
+            <div class="form-group">
+                <label for="nomePessoa">Nome da Pessoa</label>
+                <input type="text" id="nomePessoa" required placeholder="Digite seu nome completo">
+            </div>
+
+            <div class="form-group">
+                <label for="cargo">Cargo</label>
+                <input type="text" id="cargo" required placeholder="Digite seu cargo na empresa">
+            </div>
+
+            <div class="form-group">
+                <label for="nomeEmpresa">Nome da Empresa</label>
+                <input type="text" id="nomeEmpresa" required placeholder="Digite o nome da empresa">
+            </div>
+
+            <div class="form-group">
+                <label for="cnpjEmpresa">CNPJ da Empresa</label>
+                <input type="text" id="cnpjEmpresa" required placeholder="00.000.000/0000-00" maxlength="18">
+            </div>
+
+            <div class="form-group">
+                <label for="whatsappEmpresa">WhatsApp da Empresa</label>
+                <input type="tel" id="whatsappEmpresa" required placeholder="(00) 00000-0000" maxlength="15">
+            </div>
+
+            <div class="form-group">
+                <label for="clientesCadastrados">Quantidade de Clientes Cadastrados</label>
+                <input type="number" id="clientesCadastrados" required min="0" value="23">
+            </div>
+
+            <div class="form-group">
+                <label for="clientesAtivos">Quantidade de Clientes Ativos Mensais</label>
+                <input type="number" id="clientesAtivos" required min="0" value="3">
+            </div>
+
+            <div class="form-group">
+                <label for="capacidadeAtendimento">Quantidade de Clientes que Consegue Atender Mensalmente</label>
+                <input type="number" id="capacidadeAtendimento" required min="0" value="3">
+            </div>
+
+            <div class="form-group">
+                <label for="ticketMedio">Ticket Médio (R$)</label>
+                <input type="number" id="ticketMedio" required min="0" step="0.01" value="4000">
+            </div>
+
+            <div class="form-group">
+                <label for="lucroLiquido">Percentual de Lucro Líquido (%)</label>
+                <input type="number" id="lucroLiquido" required min="0" max="100" step="0.1" value="55">
+            </div>
+
+            <div class="form-group">
+                <label for="custoFixo">Percentual de Custo Fixo (%)</label>
+                <input type="number" id="custoFixo" required min="0" max="100" step="0.1" value="20">
+            </div>
+
+            <div class="form-group">
+                <label for="custoVariavel">Percentual de Custo Variável (%)</label>
+                <input type="number" id="custoVariavel" required min="0" max="100" step="0.1" value="25">
+            </div>
+
+            <div style="display: flex; justify-content: center; margin-top: 20px;">
+                <button type="submit" style="width: auto; flex: none;">Enviar</button>
+            </div>
+        </form>
+
+        <div id="summary" class="hidden">
+            <h2>Resumo das Informações</h2>
+            <div id="summaryContent"></div>
+
+            <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
+                <button type="button" class="button-secondary" onclick="salvarJSON()"
+                    style="width: auto; flex: none;">Salvar Dados (JSON)</button>
+                <button type="button" class="button-verify" onclick="abrirModal()"
+                    style="width: auto; flex: none;">Verify TM</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="verifyModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Verify TM</h2>
+                <button class="close" onclick="fecharModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <iframe id="modalIframe" class="modal-iframe" src=""></iframe>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.getElementById('strategicForm');
+            const summary = document.getElementById('summary');
+            const summaryContent = document.getElementById('summaryContent');
+
+            // Carrega dados salvos automaticamente ao carregar a página
+            carregarDadosAutomaticos();
+
+            // Carrega estado do modal automaticamente
+            carregarEstadoModal();
+
+            // Adiciona listeners para salvar automaticamente quando o usuário digitar
+            const campos = [
+                'nomePessoa', 'cargo', 'nomeEmpresa', 'cnpjEmpresa', 'whatsappEmpresa',
+                'clientesCadastrados', 'clientesAtivos', 'capacidadeAtendimento',
+                'ticketMedio', 'lucroLiquido', 'custoFixo', 'custoVariavel'
+            ];
+
+            campos.forEach(campoId => {
+                const campo = document.getElementById(campoId);
+                if (campo) {
+                    campo.addEventListener('input', salvarDadosAutomaticos);
+                    campo.addEventListener('change', salvarDadosAutomaticos);
+                }
+            });
+
+            function validatePercentageInputs() {
+                const lucroLiquido = parseFloat(document.getElementById('lucroLiquido').value) || 0;
+                const custoFixo = parseFloat(document.getElementById('custoFixo').value) || 0;
+                const custoVariavel = parseFloat(document.getElementById('custoVariavel').value) || 0;
+
+                const total = lucroLiquido + custoFixo + custoVariavel;
+                return total === 100;
+            }
+
+            function formatCurrency(value) {
+                return new Intl.NumberFormat('pt-BR', {
+                    style: 'currency',
+                    currency: 'BRL'
+                }).format(value);
+            }
+
+            function removeErrorMessages() {
+                const errorMessages = document.querySelectorAll('.error-message');
+                errorMessages.forEach(msg => msg.remove());
+
+                const errorInputs = document.querySelectorAll('.error');
+                errorInputs.forEach(input => input.classList.remove('error'));
+            }
+
+            function showError(inputElement, message) {
+                inputElement.classList.add('error');
+                const errorDiv = document.createElement('div');
+                errorDiv.className = 'error-message';
+                errorDiv.textContent = message;
+                inputElement.parentNode.appendChild(errorDiv);
+            }
+
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+                removeErrorMessages();
+
+                const clientesCadastrados = parseInt(document.getElementById('clientesCadastrados').value);
+                const clientesAtivos = parseInt(document.getElementById('clientesAtivos').value);
+                const capacidadeAtendimento = parseInt(document.getElementById('capacidadeAtendimento').value);
+                const ticketMedio = parseFloat(document.getElementById('ticketMedio').value);
+
+                // Validações
+                let hasError = false;
+
+                if (clientesAtivos > clientesCadastrados) {
+                    showError(document.getElementById('clientesAtivos'),
+                        'O número de clientes ativos não pode ser maior que o número de clientes cadastrados');
+                    hasError = true;
+                }
+
+                if (!validatePercentageInputs()) {
+                    const percentageInputs = ['lucroLiquido', 'custoFixo', 'custoVariavel'];
+                    percentageInputs.forEach(id => {
+                        showError(document.getElementById(id),
+                            'A soma dos percentuais deve ser igual a 100%');
+                    });
+                    hasError = true;
+                }
+
+                if (hasError) {
+                    return;
+                }
+
+                // Cálculos e apresentação do resumo
+                const faturamentoMensal = clientesAtivos * ticketMedio;
+                const lucroLiquido = faturamentoMensal * (parseFloat(document.getElementById('lucroLiquido').value) / 100);
+                const custoFixo = faturamentoMensal * (parseFloat(document.getElementById('custoFixo').value) / 100);
+                const custoVariavel = faturamentoMensal * (parseFloat(document.getElementById('custoVariavel').value) / 100);
+                const mensalidadeEstimada = lucroLiquido * 0.10; // 10% do lucro líquido
+
+                // Cálculo da mensalidade estimada potencial baseada na capacidade de atendimento
+                const faturamentoPotencial = capacidadeAtendimento * ticketMedio;
+                const lucroLiquidoPotencial = faturamentoPotencial * (parseFloat(document.getElementById('lucroLiquido').value) / 100);
+                const custoFixoPotencial = faturamentoPotencial * (parseFloat(document.getElementById('custoFixo').value) / 100);
+                const custoVariavelPotencial = faturamentoPotencial * (parseFloat(document.getElementById('custoVariavel').value) / 100);
+                const mensalidadeEstimadaPotencial = lucroLiquidoPotencial * 0.10; // 10% do lucro líquido potencial
+
+                summaryContent.innerHTML = `
+                    <p><strong>Clientes Cadastrados:</strong> ${clientesCadastrados}</p>
+                    <p><strong>Clientes Ativos:</strong> ${clientesAtivos}</p>
+                    <p><strong>Capacidade de Atendimento:</strong> ${capacidadeAtendimento}</p>
+                    <p><strong>Ticket Médio:</strong> ${formatCurrency(ticketMedio)}</p>
+                    <p><strong>Faturamento Mensal:</strong> ${formatCurrency(faturamentoMensal)}</p>
+                    <p><strong>Faturamento Potencial:</strong> ${formatCurrency(faturamentoPotencial)}</p>
+                    <p><strong>Lucro Líquido:</strong> ${formatCurrency(lucroLiquido)}</p>
+                    <p><strong>Lucro Líquido Potencial:</strong> ${formatCurrency(lucroLiquidoPotencial)}</p>
+                    <p><strong>Custo Fixo:</strong> ${formatCurrency(custoFixo)}</p>
+                    <p><strong>Custo Fixo Potencial:</strong> ${formatCurrency(custoFixoPotencial)}</p>
+                    <p><strong>Custo Variável:</strong> ${formatCurrency(custoVariavel)}</p>
+                    <p><strong>Custo Variável Potencial:</strong> ${formatCurrency(custoVariavelPotencial)}</p>
+                    <p><strong>Mensalidade Estimada:</strong> ${formatCurrency(mensalidadeEstimada)}</p>
+                    <p><strong>Mensalidade Estimada Potencial:</strong> ${formatCurrency(mensalidadeEstimadaPotencial)}</p>
+                `;
+
+                summary.classList.remove('hidden');
+            });
+        });
+
+        function salvarJSON() {
+            // Coleta todos os dados do formulário
+            const dados = {
+                nomePessoa: document.getElementById('nomePessoa').value,
+                cargo: document.getElementById('cargo').value,
+                nomeEmpresa: document.getElementById('nomeEmpresa').value,
+                cnpjEmpresa: document.getElementById('cnpjEmpresa').value,
+                whatsappEmpresa: document.getElementById('whatsappEmpresa').value,
+                clientesCadastrados: document.getElementById('clientesCadastrados').value,
+                clientesAtivos: document.getElementById('clientesAtivos').value,
+                capacidadeAtendimento: document.getElementById('capacidadeAtendimento').value,
+                ticketMedio: document.getElementById('ticketMedio').value,
+                lucroLiquido: document.getElementById('lucroLiquido').value,
+                custoFixo: document.getElementById('custoFixo').value,
+                custoVariavel: document.getElementById('custoVariavel').value,
+                dataExportacao: new Date().toISOString()
+            };
+
+            // Cria o arquivo JSON
+            const jsonString = JSON.stringify(dados, null, 2);
+            const blob = new Blob([jsonString], { type: 'application/json' });
+
+            // Cria o nome do arquivo baseado no nome da pessoa e empresa
+            let nomeArquivo = 'formulario_estrategico';
+
+            if (dados.nomePessoa && dados.nomeEmpresa) {
+                // Se ambos estão preenchidos: Nome_Pessoa_Nome_Empresa
+                nomeArquivo += `_${dados.nomePessoa.replace(/\s+/g, '_')}_${dados.nomeEmpresa.replace(/\s+/g, '_')}`;
+            } else if (dados.nomePessoa) {
+                // Se só o nome da pessoa está preenchido
+                nomeArquivo += `_${dados.nomePessoa.replace(/\s+/g, '_')}`;
+            } else if (dados.nomeEmpresa) {
+                // Se só o nome da empresa está preenchido
+                nomeArquivo += `_${dados.nomeEmpresa.replace(/\s+/g, '_')}`;
+            } else {
+                // Se nenhum está preenchido, usa a data
+                nomeArquivo += `_${new Date().toISOString().split('T')[0]}`;
+            }
+
+            nomeArquivo += '.json';
+
+            // Cria o link de download
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = nomeArquivo;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            alert('Dados salvos com sucesso!');
+        }
+
+        function carregarJSON(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                try {
+                    const dados = JSON.parse(e.target.result);
+
+                    // Preenche os campos do formulário com os dados carregados
+                    if (dados.nomePessoa) document.getElementById('nomePessoa').value = dados.nomePessoa;
+                    if (dados.cargo) document.getElementById('cargo').value = dados.cargo;
+                    if (dados.nomeEmpresa) document.getElementById('nomeEmpresa').value = dados.nomeEmpresa;
+                    if (dados.cnpjEmpresa) document.getElementById('cnpjEmpresa').value = dados.cnpjEmpresa;
+                    if (dados.whatsappEmpresa) document.getElementById('whatsappEmpresa').value = dados.whatsappEmpresa;
+                    if (dados.clientesCadastrados) document.getElementById('clientesCadastrados').value = dados.clientesCadastrados;
+                    if (dados.clientesAtivos) document.getElementById('clientesAtivos').value = dados.clientesAtivos;
+                    if (dados.capacidadeAtendimento) document.getElementById('capacidadeAtendimento').value = dados.capacidadeAtendimento;
+                    if (dados.ticketMedio) document.getElementById('ticketMedio').value = dados.ticketMedio;
+                    if (dados.lucroLiquido) document.getElementById('lucroLiquido').value = dados.lucroLiquido;
+                    if (dados.custoFixo) document.getElementById('custoFixo').value = dados.custoFixo;
+                    if (dados.custoVariavel) document.getElementById('custoVariavel').value = dados.custoVariavel;
+
+                    alert('Dados carregados com sucesso!');
+
+                    // Limpa o input file para permitir carregar o mesmo arquivo novamente
+                    event.target.value = '';
+
+                } catch (error) {
+                    alert('Erro ao carregar o arquivo JSON. Verifique se o arquivo está no formato correto.');
+                    console.error('Erro ao carregar JSON:', error);
+                }
+            };
+
+            reader.readAsText(file);
+        }
+
+        function abrirModal() {
+            const modal = document.getElementById('verifyModal');
+            const iframe = document.getElementById('modalIframe');
+
+            iframe.src = 'https://sobralfreenat.github.io/fnw-nc-tm-ml/';
+            modal.style.display = 'block';
+
+            // Salva o estado do modal como aberto
+            salvarEstadoModal(true);
+
+            // Monitora quando o iframe carrega para tentar restaurar dados
+            iframe.onload = function() {
+                setTimeout(() => {
+                    tentarRestaurarDadosIframe();
+                }, 1000); // Aguarda 1 segundo para o iframe carregar completamente
+            };
+
+            // Adiciona tratamento de erro para iframe
+            iframe.onerror = function () {
+                console.log('Erro ao carregar iframe, tentando abrir em nova aba');
+                window.open('https://sobralfreenat.github.io/fnw-nc-tm-ml/', '_blank');
+                fecharModal();
+            };
+        }
+
+        function fecharModal() {
+            const modal = document.getElementById('verifyModal');
+            const iframe = document.getElementById('modalIframe');
+
+            modal.style.display = 'none';
+            iframe.src = ''; // Limpa o iframe para economizar recursos
+
+            // Salva o estado do modal como fechado
+            salvarEstadoModal(false);
+        }
+
+        // Fecha o modal quando clicar fora dele
+        window.onclick = function (event) {
+            const modal = document.getElementById('verifyModal');
+            if (event.target === modal) {
+                fecharModal();
+            }
+        }
+
+        // Função para salvar dados automaticamente no localStorage
+        function salvarDadosAutomaticos() {
+            const dados = {
+                nomePessoa: document.getElementById('nomePessoa').value,
+                cargo: document.getElementById('cargo').value,
+                nomeEmpresa: document.getElementById('nomeEmpresa').value,
+                cnpjEmpresa: document.getElementById('cnpjEmpresa').value,
+                whatsappEmpresa: document.getElementById('whatsappEmpresa').value,
+                clientesCadastrados: document.getElementById('clientesCadastrados').value,
+                clientesAtivos: document.getElementById('clientesAtivos').value,
+                capacidadeAtendimento: document.getElementById('capacidadeAtendimento').value,
+                ticketMedio: document.getElementById('ticketMedio').value,
+                lucroLiquido: document.getElementById('lucroLiquido').value,
+                custoFixo: document.getElementById('custoFixo').value,
+                custoVariavel: document.getElementById('custoVariavel').value,
+                ultimaAtualizacao: new Date().toISOString()
+            };
+
+            try {
+                localStorage.setItem('formularioEstrategico', JSON.stringify(dados));
+            } catch (error) {
+                console.warn('Erro ao salvar dados no localStorage:', error);
+            }
+        }
+
+        // Função para carregar dados automaticamente do localStorage
+        function carregarDadosAutomaticos() {
+            try {
+                const dadosSalvos = localStorage.getItem('formularioEstrategico');
+                if (dadosSalvos) {
+                    const dados = JSON.parse(dadosSalvos);
+
+                    // Preenche os campos com os dados salvos
+                    if (dados.nomePessoa) document.getElementById('nomePessoa').value = dados.nomePessoa;
+                    if (dados.cargo) document.getElementById('cargo').value = dados.cargo;
+                    if (dados.nomeEmpresa) document.getElementById('nomeEmpresa').value = dados.nomeEmpresa;
+                    if (dados.cnpjEmpresa) document.getElementById('cnpjEmpresa').value = dados.cnpjEmpresa;
+                    if (dados.whatsappEmpresa) document.getElementById('whatsappEmpresa').value = dados.whatsappEmpresa;
+                    if (dados.clientesCadastrados) document.getElementById('clientesCadastrados').value = dados.clientesCadastrados;
+                    if (dados.clientesAtivos) document.getElementById('clientesAtivos').value = dados.clientesAtivos;
+                    if (dados.capacidadeAtendimento) document.getElementById('capacidadeAtendimento').value = dados.capacidadeAtendimento;
+                    if (dados.ticketMedio) document.getElementById('ticketMedio').value = dados.ticketMedio;
+                    if (dados.lucroLiquido) document.getElementById('lucroLiquido').value = dados.lucroLiquido;
+                    if (dados.custoFixo) document.getElementById('custoFixo').value = dados.custoFixo;
+                    if (dados.custoVariavel) document.getElementById('custoVariavel').value = dados.custoVariavel;
+                }
+            } catch (error) {
+                console.warn('Erro ao carregar dados do localStorage:', error);
+            }
+        }
+
+        // Função para salvar estado do modal
+        function salvarEstadoModal(aberto) {
+            try {
+                const estadoModal = {
+                    aberto: aberto,
+                    ultimaAtualizacao: new Date().toISOString()
+                };
+                localStorage.setItem('modalVerifyTM', JSON.stringify(estadoModal));
+            } catch (error) {
+                console.warn('Erro ao salvar estado do modal:', error);
+            }
+        }
+
+        // Função para carregar estado do modal
+        function carregarEstadoModal() {
+            try {
+                const estadoSalvo = localStorage.getItem('modalVerifyTM');
+                if (estadoSalvo) {
+                    const estado = JSON.parse(estadoSalvo);
+                    if (estado.aberto) {
+                        // Reabre o modal se estava aberto
+                        const modal = document.getElementById('verifyModal');
+                        const iframe = document.getElementById('modalIframe');
+
+                        iframe.src = 'https://sobralfreenat.github.io/fnw-nc-tm-ml/';
+                        modal.style.display = 'block';
+
+                        // Adiciona tratamento de erro para iframe
+                        iframe.onerror = function () {
+                            console.log('Erro ao carregar iframe, tentando abrir em nova aba');
+                            window.open('https://sobralfreenat.github.io/fnw-nc-tm-ml/', '_blank');
+                            fecharModal();
+                        };
+                    }
+                }
+            } catch (error) {
+                console.warn('Erro ao carregar estado do modal:', error);
+            }
+        }
+
+        // Função para limpar dados salvos (opcional)
+        function limparDadosSalvos() {
+            try {
+                localStorage.removeItem('formularioEstrategico');
+                localStorage.removeItem('modalVerifyTM');
+                console.log('Dados salvos foram limpos');
+            } catch (error) {
+                console.warn('Erro ao limpar dados salvos:', error);
+            }
+        }
+    </script>
+</body>
+
+</html>
